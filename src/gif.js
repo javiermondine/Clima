@@ -45,11 +45,35 @@ export async function fetchWeatherGif(query, apiKey) {
   );
 }
 
+async function fetchTranslateGif(query, apiKey) {
+  const url = new URL('https://api.giphy.com/v1/gifs/translate');
+  url.searchParams.set('api_key', apiKey);
+  url.searchParams.set('s', query);
+  url.searchParams.set('weirdness', '1');
+  const res = await fetch(url.toString());
+  if (!res.ok) return null;
+  const json = await res.json();
+  const images = json?.data?.images || {};
+  return (
+    images?.downsized_medium?.url ||
+    images?.fixed_height?.url ||
+    images?.original?.url ||
+    null
+  );
+}
+
 export async function getGifForConditions(icon, description, apiKey) {
   if (!apiKey) return null;
   const q = mapToQuery(icon, description);
   try {
-    return await fetchWeatherGif(q, apiKey);
+    let url = await fetchWeatherGif(q, apiKey);
+    if (url) return url;
+    // Fallback 1: translate endpoint con la misma consulta
+    url = await fetchTranslateGif(q, apiKey);
+    if (url) return url;
+    // Fallback 2: consulta genérica
+    url = await fetchTranslateGif('weather', apiKey);
+    return url;
   } catch {
     return null;
   }
