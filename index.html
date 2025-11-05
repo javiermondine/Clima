@@ -27,6 +27,12 @@
           <span class="slider"></span>
         </label>
         <span class="label">°C / °F</span>
+
+        <label class="switch" title="Mostrar GIF (requiere API key de Giphy)">
+          <input id="gif-toggle" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+        <span class="label">GIF</span>
       </div>
     </section>
 
@@ -48,7 +54,10 @@
     </section>
 
     <footer class="footer">
-      <p>Visual Crossing API • <span class="muted">Usa ?key=TU_API_KEY en la URL o guarda la key en localStorage</span></p>
+      <p>
+        Visual Crossing API • <span class="muted">Usa ?key=TU_API_KEY o guarda 'vc_key' en localStorage</span><br />
+        Giphy (opcional) • <span class="muted">Usa ?giphy=TU_API_KEY o guarda 'giphy_key' en localStorage</span>
+      </p>
     </footer>
   </main>
 

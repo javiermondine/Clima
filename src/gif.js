@@ -1,0 +1,53 @@
+// Giphy integration helpers (optional)
+// Provide your API key via ?giphy=TU_API_KEY or localStorage.setItem('giphy_key','TU_API_KEY')
+
+function read(key) {
+  try { return localStorage.getItem(key); } catch { return null; }
+}
+
+export function getGiphyKey() {
+  const qs = new URLSearchParams(location.search).get('giphy');
+  const stored = typeof localStorage !== 'undefined' ? read('giphy_key') : null;
+  return qs || stored || '';
+}
+
+export function mapToQuery(icon = '', description = '') {
+  const d = `${icon} ${description}`.toLowerCase();
+  if (d.includes('thunder') || d.includes('storm')) return 'thunderstorm weather';
+  if (d.includes('rain') || d.includes('drizzle')) return 'rain weather';
+  if (d.includes('snow') || d.includes('sleet')) return 'snow weather';
+  if (d.includes('fog') || d.includes('mist') || d.includes('haze')) return 'foggy weather';
+  if (d.includes('cloud')) return 'cloudy sky';
+  if (d.includes('clear') || d.includes('sun')) return 'sunny sky';
+  return 'weather sky';
+}
+
+export async function fetchWeatherGif(query, apiKey) {
+  const url = new URL('https://api.giphy.com/v1/gifs/search');
+  url.searchParams.set('api_key', apiKey);
+  url.searchParams.set('q', query);
+  url.searchParams.set('limit', '1');
+  url.searchParams.set('rating', 'g');
+
+  const res = await fetch(url.toString());
+  if (!res.ok) throw new Error('Error al obtener GIF');
+  const json = await res.json();
+  const gif = json?.data?.[0];
+  const images = gif?.images || {};
+  return (
+    images?.downsized_medium?.url ||
+    images?.fixed_height?.url ||
+    images?.original?.url ||
+    null
+  );
+}
+
+export async function getGifForConditions(icon, description, apiKey) {
+  if (!apiKey) return null;
+  const q = mapToQuery(icon, description);
+  try {
+    return await fetchWeatherGif(q, apiKey);
+  } catch {
+    return null;
+  }
+}
