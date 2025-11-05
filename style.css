@@ -6,7 +6,10 @@ html,body{height:100%}
 body{margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--text);background:
   radial-gradient(900px 500px at 15% 10%,rgba(155,126,255,.25),transparent 60%),
   radial-gradient(1000px 600px at 85% 0%,rgba(255,123,212,.2),transparent 60%),
-  linear-gradient(160deg,#0b0c1d,#0f1026 55%)}
+  linear-gradient(160deg,#0b0c1d,#0f1026 55%);
+  background-size: 120% 120%;
+  animation: bgShift 18s ease-in-out infinite}
+@keyframes bgShift{0%{background-position:0% 0%}50%{background-position:100% 50%}100%{background-position:0% 0%}}
 .container{max-width:880px;margin:0 auto;padding:1.5rem}
 .header{text-align:center;margin:1rem 0 1.25rem}
 .header h1{margin:0;font-size:2rem}
@@ -41,7 +44,9 @@ body{margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helv
 .settings-actions{grid-column:1 / -1;display:flex;gap:.5rem;margin-top:.5rem}
 .btn.ghost{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.15)}
 .muted.small{font-size:.85rem;color:var(--muted)}
-.weather{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem}
+.weather{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem;position:relative}
+.weather:before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(155,126,255,.6),rgba(255,123,212,.5));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.weather:hover{transform:translateY(-2px);transition:.25s ease;box-shadow:0 18px 50px rgba(0,0,0,.5)}
 .city-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
 #icon{width:72px;height:72px}
 .data-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
@@ -59,7 +64,7 @@ body{margin:0;font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Helv
 
 /* GIF */
 .gif-wrap{margin-top:1rem;display:grid;place-items:center}
-.gif-wrap img{max-width:100%;border-radius:10px}
+.gif-wrap img{max-width:100%;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
 
 .error{color:#ff9fbf}
 
