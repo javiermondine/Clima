@@ -17,6 +17,17 @@ function getApiKey() {
   return qs || stored || '';
 }
 
+function prefillKeyInputs(){
+  const vcInput = document.getElementById('vcKeyInput');
+  const gyInput = document.getElementById('giphyKeyInput');
+  if(vcInput){
+    try{ vcInput.value = localStorage.getItem('vc_key') || new URLSearchParams(location.search).get('key') || ''; }catch{}
+  }
+  if(gyInput){
+    try{ gyInput.value = localStorage.getItem('giphy_key') || new URLSearchParams(location.search).get('giphy') || ''; }catch{}
+  }
+}
+
 async function handleSearch(query) {
   const key = getApiKey();
   if (!key) {
@@ -70,6 +81,8 @@ function wireEvents() {
   const input = document.getElementById('location-input');
   const toggle = document.getElementById('unit-toggle');
   const gifToggle = document.getElementById('gif-toggle');
+  const saveBtn = document.getElementById('saveKeys');
+  const clearBtn = document.getElementById('clearKeys');
 
   form.addEventListener('submit', e => {
     e.preventDefault();
@@ -96,9 +109,38 @@ function wireEvents() {
       if (state.lastWeatherData) await maybeRenderGif(state.lastWeatherData);
     });
   }
+
+  if (saveBtn) {
+    saveBtn.addEventListener('click', async () => {
+      const vc = document.getElementById('vcKeyInput')?.value.trim();
+      const gy = document.getElementById('giphyKeyInput')?.value.trim();
+      try{ if(vc) localStorage.setItem('vc_key', vc); }catch{}
+      try{ if(gy) localStorage.setItem('giphy_key', gy); }catch{}
+      // feedback y refresco si hay una búsqueda previa
+      if(state.lastQuery){ await handleSearch(state.lastQuery); }
+      else { renderError('Claves guardadas. Ya puedes buscar tu ciudad.'); }
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      try{ localStorage.removeItem('vc_key'); }catch{}
+      try{ localStorage.removeItem('giphy_key'); }catch{}
+      prefillKeyInputs();
+      renderError('Claves eliminadas de este navegador.');
+      // Ocultar GIF si estaba activo
+      state.enableGiphy = false;
+      const gt = document.getElementById('gif-toggle');
+      if (gt) gt.checked = false;
+      const wrap = document.getElementById('gifWrap');
+      const img = document.getElementById('gif');
+      if (wrap && img){ wrap.hidden = true; img.src = ''; }
+    });
+  }
 }
 
 // Init
 wireEvents();
+prefillKeyInputs();
 // Opcional: consulta inicial
 // handleSearch('Buenos Aires');
