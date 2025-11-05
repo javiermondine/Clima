@@ -6,9 +6,12 @@ function read(key) {
 }
 
 export function getGiphyKey() {
+  // Prioridad: window.CONFIG -> ?giphy= -> localStorage
+  const cfg = typeof window !== 'undefined' ? (window.CONFIG || {}) : {};
+  const fromCfg = cfg.giphy_key || '';
   const qs = new URLSearchParams(location.search).get('giphy');
   const stored = typeof localStorage !== 'undefined' ? read('giphy_key') : null;
-  return qs || stored || '';
+  return fromCfg || qs || stored || '';
 }
 
 export function mapToQuery(icon = '', description = '') {

@@ -38,5 +38,17 @@ Clima/
 - La app usa `fetch()` y `async/await` con `try/catch`.
 - El endpoint usado es `timeline`: `/VisualCrossingWebServices/rest/services/timeline/{location}?unitGroup={metric|us}&key=...&contentType=json`.
 - Los datos mostrados: ciudad, temperatura, descripción, humedad e ícono (mapeado a SVGs públicos).
-## Deploy
-Este repositorio incluye un workflow de GitHub Actions que despliega automáticamente a **GitHub Pages** al hacer push a `main`. Ve a Settings → Pages para ver la URL una vez ejecutado el workflow.
+## Deploy (GitHub Pages + Secrets)
+El workflow despliega automáticamente a **GitHub Pages** y genera un `config.js` con las claves leídas de Secrets del repo.
+
+1. En GitHub, ve a Settings → Secrets and variables → Actions → New repository secret.
+2. Crea estos secrets:
+    - `VC_KEY` = tu API key de Visual Crossing
+    - `GIPHY_KEY` = tu API key de Giphy (opcional)
+3. Al hacer push a `main`, el workflow creará `config.js` con:
+    ```js
+    window.CONFIG = { vc_key: '...', giphy_key: '...' };
+    ```
+4. La app leerá primero `window.CONFIG`, y si no está, caerá a `?key=`/`?giphy=` o `localStorage`.
+
+Importante: en una app 100% cliente las claves expuestas siguen siendo visibles en el navegador. Este método evita guardarlas en el repositorio, pero si necesitas ocultarlas del cliente final, usa un proxy/función serverless para hacer las llamadas en el servidor y no exponer las claves en el frontend.

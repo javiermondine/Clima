@@ -12,9 +12,12 @@ const state = {
 };
 
 function getApiKey() {
+  // Prioridad: window.CONFIG -> ?key= -> localStorage
+  const cfg = typeof window !== 'undefined' ? (window.CONFIG || {}) : {};
+  const fromCfg = cfg.vc_key || '';
   const qs = new URLSearchParams(location.search).get('key');
   const stored = typeof localStorage !== 'undefined' ? localStorage.getItem('vc_key') : null;
-  return qs || stored || '';
+  return fromCfg || qs || stored || '';
 }
 
 function prefillKeyInputs(){

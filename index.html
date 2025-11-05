@@ -78,15 +78,8 @@
     </footer>
   </main>
 
+  <!-- Archivo opcional generado en deploy con GitHub Secrets -->
+  <script src="config.js" defer></script>
   <script type="module" src="script.js"></script>
-  <script>
-    // Establece automáticamente las API keys si no existen en este navegador.
-    // Nota: Al estar en el cliente, estas claves serán visibles en el código fuente publicado.
-    // Para ocultarlas en el repo, podemos moverlas a Secrets y generarlas en deploy (puedo configurarlo si quieres).
-    try {
-      if (!localStorage.getItem('vc_key')) localStorage.setItem('vc_key','VKUYDP2K2N4ZGHSK4HMA4AXXW');
-      if (!localStorage.getItem('giphy_key')) localStorage.setItem('giphy_key','1iCAFiH5rwv1K60Ce3kY8CAIR2wggQqt');
-    } catch (e) {}
-  </script>
 </body>
 </html>
