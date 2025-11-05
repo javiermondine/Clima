@@ -38,23 +38,6 @@
 
     <section id="status" class="status">Escribe una ciudad y pulsa Buscar</section>
 
-    <section class="settings">
-      <details>
-        <summary>Configurar claves (API)</summary>
-        <div class="settings-grid">
-          <label for="vcKeyInput">Visual Crossing key</label>
-          <input id="vcKeyInput" type="text" placeholder="vc_key" />
-          <label for="giphyKeyInput">Giphy key (opcional)</label>
-          <input id="giphyKeyInput" type="text" placeholder="giphy_key" />
-          <div class="settings-actions">
-            <button id="saveKeys" class="btn" type="button">Guardar</button>
-            <button id="clearKeys" class="btn ghost" type="button">Borrar</button>
-          </div>
-          <p class="muted small">Guardamos las claves en localStorage: 'vc_key' y 'giphy_key'. También puedes usar parámetros ?key= y ?giphy= en la URL.</p>
-        </div>
-      </details>
-    </section>
-
     <section id="weather" class="weather" hidden>
       <div class="city-row">
         <h2 id="city">—</h2>
@@ -71,10 +54,7 @@
     </section>
 
     <footer class="footer">
-      <p>
-        Visual Crossing API • <span class="muted">Usa ?key=TU_API_KEY o guarda 'vc_key' en localStorage</span><br />
-        Giphy (opcional) • <span class="muted">Usa ?giphy=TU_API_KEY o guarda 'giphy_key' en localStorage</span>
-      </p>
+      <p class="muted">Clima provisto por Visual Crossing</p>
     </footer>
   </main>
 
