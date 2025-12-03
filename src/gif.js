@@ -26,40 +26,48 @@ export function mapToQuery(icon = '', description = '') {
 }
 
 export async function fetchWeatherGif(query, apiKey) {
-  const url = new URL('https://api.giphy.com/v1/gifs/search');
-  url.searchParams.set('api_key', apiKey);
-  url.searchParams.set('q', query);
-  url.searchParams.set('limit', '1');
-  url.searchParams.set('rating', 'g');
+  try {
+    const url = new URL('https://api.giphy.com/v1/gifs/search');
+    url.searchParams.set('api_key', apiKey);
+    url.searchParams.set('q', query);
+    url.searchParams.set('limit', '1');
+    url.searchParams.set('rating', 'g');
 
-  const res = await fetch(url.toString());
-  if (!res.ok) throw new Error('Error al obtener GIF');
-  const json = await res.json();
-  const gif = json?.data?.[0];
-  const images = gif?.images || {};
-  return (
-    images?.downsized_medium?.url ||
-    images?.fixed_height?.url ||
-    images?.original?.url ||
-    null
-  );
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error('Error al obtener GIF');
+    const json = await res.json();
+    const gif = json?.data?.[0];
+    const images = gif?.images || {};
+    return (
+      images?.downsized_medium?.url ||
+      images?.fixed_height?.url ||
+      images?.original?.url ||
+      null
+    );
+  } catch {
+    return null;
+  }
 }
 
 async function fetchTranslateGif(query, apiKey) {
-  const url = new URL('https://api.giphy.com/v1/gifs/translate');
-  url.searchParams.set('api_key', apiKey);
-  url.searchParams.set('s', query);
-  url.searchParams.set('weirdness', '1');
-  const res = await fetch(url.toString());
-  if (!res.ok) return null;
-  const json = await res.json();
-  const images = json?.data?.images || {};
-  return (
-    images?.downsized_medium?.url ||
-    images?.fixed_height?.url ||
-    images?.original?.url ||
-    null
-  );
+  try {
+    const url = new URL('https://api.giphy.com/v1/gifs/translate');
+    url.searchParams.set('api_key', apiKey);
+    url.searchParams.set('s', query);
+    url.searchParams.set('weirdness', '1');
+    const res = await fetch(url.toString());
+    if (!res.ok) return null;
+    const json = await res.json();
+    const images = json?.data?.images || {};
+    return (
+      images?.downsized_medium?.url ||
+      images?.fixed_height?.url ||
+      images?.original?.url ||
+      null
+    );
+  } catch {
+    return null;
+  }
 }
 
 export async function getGifForConditions(icon, description, apiKey) {
